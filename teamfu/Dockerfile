@@ -18,4 +18,5 @@ RUN ls -lt /publishedApp
 FROM mcr.microsoft.com/dotnet/aspnet:5.0
 WORKDIR /app
 COPY --from=build /publishedApp .
+RUN ls -lt
 ENTRYPOINT ["dotnet", "team-reece.dll"]
