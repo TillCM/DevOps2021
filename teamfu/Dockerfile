@@ -1,19 +1,21 @@
 # https://hub.docker.com/_/microsoft-dotnet
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
-WORKDIR /appv2
+WORKDIR /app
 
 
 # copy csproj and restore as distinct layers
 COPY src/com.teamfu.be/team-reece/*.csproj ./
-RUN dotnet restore 
+RUN dotnet restore  team-reece.csproj
 
 # copy everything else and build app
-COPY src/com.teamfu.be/team-reece/. ./team-reece/
-WORKDIR /appv2/team-reece
-RUN dotnet publish -c release -o /app --no-restore
+COPY src/com.teamfu.be/team-reece/ ./team-reece/
+WORKDIR /app/team-reece
+RUN mkdir /publishedApp
+RUN dotnet publish -c release -o /publishedApp
+RUN ls -lt /publishedApp
 
 # final stage/image
 FROM mcr.microsoft.com/dotnet/aspnet:5.0
-WORKDIR /appv2
-COPY --from=build /appv2 ./
+WORKDIR /app
+COPY --from=build /publishedApp .
 ENTRYPOINT ["dotnet", "team-reece.dll"]
