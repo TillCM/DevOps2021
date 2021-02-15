@@ -1,0 +1,11 @@
+/app/team-reece
+/app/appsettings.Development.json
+/app/appsettings.json
+/app/team-reece.dll
+/app/team-reece.deps.json
+/app/team-reece.runtimeconfig.json
+/app/team-reece.pdb
+/app/Microsoft.OpenApi.dll
+/app/Swashbuckle.AspNetCore.Swagger.dll
+/app/Swashbuckle.AspNetCore.SwaggerGen.dll
+/app/Swashbuckle.AspNetCore.SwaggerUI.dll
