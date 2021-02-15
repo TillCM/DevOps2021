@@ -26,7 +26,7 @@ namespace team_reece.Controllers
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
-            System.Console.WriteLine( "HI am the BE");
+            System.Console.WriteLine( "Hi am the be server");
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {

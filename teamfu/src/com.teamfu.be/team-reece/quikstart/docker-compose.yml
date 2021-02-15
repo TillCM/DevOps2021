@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  webapp:
+    build: 
+      context: /home/devopstrainee/dev/teamfu
+      dockerfile: Dockerfile
+    ports:
+      - "5001:80"
+
