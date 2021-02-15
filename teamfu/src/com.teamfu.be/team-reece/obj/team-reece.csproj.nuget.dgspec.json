@@ -10,11 +10,11 @@
         "projectUniqueName": "/home/devopstrainee/dev/teamfu/src/com.teamfu.be/team-reece/team-reece.csproj",
         "projectName": "team-reece",
         "projectPath": "/home/devopstrainee/dev/teamfu/src/com.teamfu.be/team-reece/team-reece.csproj",
-        "packagesPath": "/root/.nuget/packages/",
+        "packagesPath": "/home/devopstrainee/.nuget/packages/",
         "outputPath": "/home/devopstrainee/dev/teamfu/src/com.teamfu.be/team-reece/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/root/.nuget/NuGet/NuGet.Config"
+          "/home/devopstrainee/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
