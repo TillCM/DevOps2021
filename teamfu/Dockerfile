@@ -2,9 +2,15 @@
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /app
 
+# install debug tools
+RUN apt update
+RUN apt install tree
+
 # copy csproj and restore as distinct layers
 COPY src/com.teamfu.be/team-reece/team-reece.csproj ./
+RUN tree
 RUN dotnet restore team-reece.csproj
+RUN ls -l
 
 # copy everything else and build app
 COPY src/com.teamfu.be/team-reece/. /app/team-reece/
