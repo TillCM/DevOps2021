@@ -11,6 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using team_reece.Models;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace team_reece
 {
@@ -26,14 +29,8 @@ namespace team_reece
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var server = Configuration["DBServer"] ?? "db_1";
-            var port = Configuration["DBPort"] ?? "1433";
-            var user  = Configuration["DBUser"] ?? "SA";
-            var password = Configuration["DBPassword"] ?? "Your_password123";
-            var database - Configuration["Database"] ?? "teamfu";
-            
-            services.AddDbContext<teamfuContext>(options =>
-            options.UseSqlServer($"Server ={server},{port}; Initial Catalog ={database};User ID = {user};Password ={password}"));
+           
+            services.AddDbContext<teamfuContext>(options=> options.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

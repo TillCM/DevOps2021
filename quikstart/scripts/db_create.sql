@@ -20,7 +20,7 @@ USE Teamfu
 GO
 
 
-CREATE TABLE dbo.task 
+CREATE TABLE dbo.ToDo
 (  
     PurchaseOrderID int NOT NULL  
     ,LineNumber smallint NOT NULL  

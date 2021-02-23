@@ -17,7 +17,7 @@ namespace team_reece.Models
         {
         }
 
-        public virtual DbSet<Task> Tasks { get; set; }
+        public virtual DbSet<ToDo> ToDos { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -32,11 +32,11 @@ namespace team_reece.Models
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
-            modelBuilder.Entity<Task>(entity =>
+            modelBuilder.Entity<ToDo>(entity =>
             {
                 entity.HasNoKey();
 
-                entity.ToTable("task");
+                entity.ToTable("ToDo");
 
                 entity.Property(e => e.DueDate).HasColumnType("datetime");
 

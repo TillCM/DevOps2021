@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace team_reece.Models
 {
-    public partial class Task
+    public partial class ToDo
     {
         public int PurchaseOrderId { get; set; }
         public short LineNumber { get; set; }

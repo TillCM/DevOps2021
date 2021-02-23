@@ -5,39 +5,45 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using team_reece.Models;
 
 namespace team_reece.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
- 
+    [Route("api/[controller]")]
     public class ListsController : ControllerBase
     {
-        
-        private readonly  teamfuContext db;
 
-        public Lists(teamfuContext context)
+       public teamfuContext _context;
+
+        public ListsController(teamfuContext context )
         {
-            db = context;
+          _context = new teamfuContext();
         }
-
         
 
         [HttpGet]
-        public ActionResult<IEnumerable<Task>> Get()
+        public List<ToDo> Get()
         {
-           return 
+            
+            return  _context.ToDos.ToList();
         }
 
-       
-        // POST: api/User
+         // GET: api/Lists/5
+        [HttpGet("{id}", Name = "Get")]
+        public ToDo Get(int id)
+        {
+            return _context.ToDos.Find(id);
+        }
+
+         // POST: api/Lists
         [HttpPost]
-        public IActionResult Post([FromBody] Task model)
+        public IActionResult Post([FromBody] ToDo model)
         {
             try
             {
-                db.Task.Add(model);
-                db.SaveChanges();
+                _context.Add(model);
+                _context.SaveChanges();
                 return StatusCode(StatusCodes.Status201Created, model);
 
             }
@@ -45,6 +51,22 @@ namespace team_reece.Controllers
             {
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex);
-            }
+            }   
+        }
+
+
+        // PUT: api/User/5
+        [HttpPut("{id}")]
+        public void Put(int id, [FromBody] ToDo model)
+        {
+            _context.ToDos.Add(model);
+        }
+
+        // DELETE: api/ApiWithActions/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+        }
+        
     }
 }
