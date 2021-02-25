@@ -1,9 +1,33 @@
-version: '3.8'
+version: "3.8"
 services:
-  webapp:
-    build: 
-      context: ../../../../
-      dockerfile: Dockerfile
-    ports:
-      - "5001:80"
+  
+  db:
+    image: "mcr.microsoft.com/mssql/server:2019-latest"
+    restart: always
+    environment: 
+      MSSQL_TCP_PORT: 1433
+      MSSQL_PID: Developer
+      SA_PASSWORD: "Your_password123"
+      ACCEPT_EULA: "Y"
+      
+    
+      
+    extra_hosts: 
+      - "localhost:192.168.10.55"  
+
+    user: root 
+    networks: 
+      - team-reece
+    ports: 
+      - 1433:1433
+    
+    volumes:
+      - ./mssql/data:/var/opt/mssql/data
+      - ./mssql/log:/var/opt/mssql/log
+      - ./mssql/secrets:/var/opt/mssql/secrets
+      - ./mssql/sql:/tmp/sql
+  
+networks: 
+  team-reece:
+ 
 

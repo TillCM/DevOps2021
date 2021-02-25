@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  webapp:
+    image: team_reece/teamfu:latest
+    build: 
+      context: ../
+      dockerfile: Dockerfile
+    ports:
+      - "5001:80"
+    networks: 
+     - team-reece
+    depends_on: 
+      - db
+
+    environment: 
+      - DATABASE_SERVER=db
+      - DATABASE_PORT=1433
+      - DATABASE_USER=SA
+      - DATABASE_PASSWORD=Your_password123
+      - DATABASE_NAME=teamfu
+
