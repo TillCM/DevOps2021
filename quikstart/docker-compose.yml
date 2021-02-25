@@ -9,6 +9,10 @@ services:
       MSSQL_PID: Developer
       SA_PASSWORD: "Your_password123"
       ACCEPT_EULA: "Y"
+    
+      
+    extra_hosts: 
+      - "localhost:192.168.10.55"  
 
     user: root 
     networks: 

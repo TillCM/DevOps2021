@@ -13,6 +13,7 @@ namespace team_reece.Controllers
     [Route("api/[controller]")]
     public class ListsController : ControllerBase
     {
+        
 
        public teamfuContext _context;
 
@@ -21,10 +22,12 @@ namespace team_reece.Controllers
           _context = new teamfuContext();
         }
         
+     
 
         [HttpGet]
         public List<ToDo> Get()
         {
+            
             
             return  _context.ToDos.ToList();
         }
