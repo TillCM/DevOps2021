@@ -12,4 +12,10 @@ services:
     depends_on: 
       - db
 
+    environment: 
+      - DATABASE_SERVER=db
+      - DATABASE_PORT=1433
+      - DATABASE_USER=SA
+      - DATABASE_PASSWORD=Your_password123
+      - DATABASE_NAME=teamfu
 

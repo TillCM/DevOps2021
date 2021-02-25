@@ -26,11 +26,22 @@ namespace team_reece
 
         public IConfiguration Configuration { get; }
 
+
+        public static string GenerateDBConnectionFromEnv(Logger logger)
+        {
+            string host = GetEnvironmentVariableValue("DATABASE_SERVER", null, logger);
+            string port = GetEnvironmentVariableValue("DATABASE_PORT", "5432", logger);
+            string userid = GetEnvironmentVariableValue("DATABASE_USER", null, logger);
+            string password = GetEnvironmentVariableValue("DATABASE_PASSWORD", null, logger);
+            string database = GetEnvironmentVariableValue("DATABASE_NAME", null, logger);
+            return $"Data Source={host},{port};Database={database};User Id={userid};Password={password};" ;
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
            
-            services.AddDbContext<teamfuContext>(options=> options.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<teamfuContext>(options=> options.UseSqlServer(this.Configuration.GetConnectionString(GenerateDBConnectionFromEnv(logger))));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -43,6 +54,7 @@ namespace team_reece
         {
             if (env.IsDevelopment())
             {
+                app.UseEnvironnmentVariables();
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "team_reece v1"));

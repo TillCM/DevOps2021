@@ -6,6 +6,9 @@ WORKDIR /app
 RUN apt update
 RUN apt install tree
 
+#Environment Variables 
+#ENV ConnectionStrings: "Data Source=db,1433;Database=teamfu;User Id=SA;Password=Your_password123;"
+
 # copy csproj and restore as distinct layers
 COPY src/com.teamfu.be/team-reece/team-reece.csproj ./
 RUN tree
