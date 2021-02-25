@@ -3,8 +3,9 @@ FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /app
 
 # install debug tools
-RUN apt update
-RUN apt install tree
+RUN apt-get update
+RUN apt-get upgrade -y
+RUN apt-get install tree
 
 #Environment Variables 
 #ENV ConnectionStrings: "Data Source=db,1433;Database=teamfu;User Id=SA;Password=Your_password123;"
@@ -23,6 +24,13 @@ RUN dotnet publish team-reece.csproj -c release -o /publishedApp
 
 # final stage/image
 FROM mcr.microsoft.com/dotnet/aspnet:5.0
+ENV TZ=Africa/Johannesburg
+RUN apt-get update
+RUN apt-get upgrade -y
+RUN apt-get install -y tzdata
 WORKDIR /app
 COPY --from=build /publishedApp .
+
+HEALTHCHECK CMD curl --fail http://localhost:80 || exit 1
+
 ENTRYPOINT ["dotnet", "team-reece.dll"]
