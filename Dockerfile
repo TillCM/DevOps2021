@@ -3,8 +3,7 @@ FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /app
 
 # install debug tools
-RUN apt-get update
-RUN apt-get upgrade -y
+
 RUN apt-get install tree
 
 #Environment Variables 
