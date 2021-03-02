@@ -42,6 +42,12 @@ services:
       DATABASE_NAME: "teamfu"
       SA_USER: "sa"
       SA_PASSWORD: "Your_password123"
+    
+    volumes:
+      - ./mssql/data:/var/opt/mssql/data
+      - ./mssql/log:/var/opt/mssql/log
+      - ./mssql/secrets:/var/opt/mssql/secrets
+      - ./mssql/sql:/tmp/sql 
     depends_on: 
       - db   
     networks:
