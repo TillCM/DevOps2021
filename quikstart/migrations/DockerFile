@@ -3,5 +3,6 @@ WORKDIR /src
 COPY  ./scripts/db_create.sql .
 #ENTRYPOINT [ "flyway" migrate ]
 
-ENTRYPOINT flyway  migrate  -user="SA-"password="Your_password123-"url="jdbc:sqlserver://db:1433;db=teamfu-"locations="filesystem:."
+ENTRYPOINT flyway  migrate  -user="SA" -password="Your_password123" -url="jjdbc:sqlserver://db:1433;databaseName=teamfu"-locations="filesystem:."
+
 

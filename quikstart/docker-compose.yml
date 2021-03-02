@@ -32,6 +32,9 @@ services:
       context: ./migrations
       dockerfile: DockerFile
     environment:
+      FLYWAY_USER: "sa"
+      FLYWAY_PASSWORD: "Your_password123"
+      FLYWAY_URL: "jdbc:sqlserver://db:1433;databaseName=teamfu"
       DATABASE_SERVER: "db"
       DATABASE_USER: "sa"
       DATABASE_PASSWORD: "Your_password123"
