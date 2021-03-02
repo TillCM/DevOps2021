@@ -26,6 +26,23 @@ services:
       - ./mssql/log:/var/opt/mssql/log
       - ./mssql/secrets:/var/opt/mssql/secrets
       - ./mssql/sql:/tmp/sql
+
+  migration:
+    build: 
+      context: ./migrations
+      dockerfile: DockerFile
+    environment:
+      DATABASE_SERVER: "db"
+      DATABASE_USER: "sa"
+      DATABASE_PASSWORD: "Your_password123"
+      DATABASE_PORT: "1433"
+      DATABASE_NAME: "teamfu"
+      SA_USER: "sa"
+      SA_PASSWORD: "Your_password123"
+    depends_on: 
+      - db   
+    networks:
+      - team-reece     
   
 networks: 
   team-reece:

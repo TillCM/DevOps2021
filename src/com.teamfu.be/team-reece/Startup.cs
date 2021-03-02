@@ -43,7 +43,7 @@ namespace team_reece
         {
             if (env.IsDevelopment())
             {
-                // app.UseEnvironnmentVariables();
+                //app.UseEnvironnmentVariables();
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "team_reece v1"));
