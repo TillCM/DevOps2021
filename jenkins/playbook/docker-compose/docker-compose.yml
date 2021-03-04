@@ -1,0 +1,43 @@
+# This is a docker-compose file that is used in the circleci pipeline
+
+version: "3.2"
+
+services:
+  teamfu-ui:
+    container_name: teamfu-ui
+    image: registry.digitalocean.com/cybermint/teamfu-ui:latest
+    ports:
+      - "127.0.0.1:8080:80"
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s      
+    networks:
+      - teamfu-net
+      
+  postgres:
+    container_name: postgresql
+    image: postgres:alpine
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres      
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 20000
+        hard: 40000
+    networks:
+      - teamfu-net
+  
+networks:
+  teamfu-net:

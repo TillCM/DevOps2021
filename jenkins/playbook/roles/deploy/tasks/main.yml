@@ -1,0 +1,173 @@
+---
+  - name: Update apt cache
+    apt: update_cache=yes cache_valid_time=3600
+    become: true
+
+  - name: Upgrade all apt packages
+    apt: upgrade=dist
+    become: true
+
+  - name: Install system dependencies
+    become: true
+    apt:
+      name: "{{ packages }}"
+      state: present
+      update_cache: yes
+    vars:
+      packages:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
+      - gnupg-agent
+  
+  - name: Add an apt signing key for Docker
+    become: true
+    apt_key:
+      url: https://download.docker.com/linux/ubuntu/gpg
+      state: present
+
+  - name: Add apt repository for stable version
+    become: true
+    apt_repository:
+      repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
+      state: present
+
+  - name: Install Docker
+    become: true
+    apt:
+      name: "{{ packages }}"
+      state: present
+      update_cache: yes
+    vars:
+      packages:
+      - docker-ce
+      - docker-ce-cli 
+      - containerd.io
+
+  - name: Install Docker-Compose
+    become: true
+    apt:
+      name: "{{ packages }}"
+      state: present
+      update_cache: yes
+    vars:
+      packages:
+      - docker-compose
+
+  - name: Ensure nginx is at the latest version
+    become: true
+    apt: name=nginx state=latest
+  
+  - name: Start nginx
+    become: true
+    service:
+        name: nginx
+        state: started
+
+  - name: Copy nginx config to server
+    become: true
+    copy:
+      src: templates/nginx.conf
+      dest: /etc/nginx/sites-available/default
+      owner: www-data
+      group: www-data
+  
+  - name: Create symbolic link for nginx enabled sites
+    become: true
+    file:
+      src: /etc/nginx/sites-available/default
+      dest: /etc/nginx/sites-enabled/default
+      state: link
+  
+  - name: Create config folder for doctl
+    become: true
+    file:
+      path: /root/.config
+      state: directory    
+
+  - name: Install doctl (used to auth with Digital Ocean)
+    become: true
+    snap:
+      name: doctl
+
+  - name: Connect doctl with docker
+    become: true
+    command: snap connect doctl:dot-docker
+  
+  - name: Initialize doctl using DigitalOcean API access token
+    become: true
+    command: doctl auth init --access-token "{{ digital_ocean_api_key }}"
+  
+  - name: Login to Digital Ocean docker registry using doctl
+    become: true
+    command: doctl registry login 
+    
+  - name: Copy docker-compose to server
+    become: true
+    copy:
+      src: docker-compose/docker-compose.yml
+      dest: /home/docker-compose.yml
+      mode: '0644'
+
+  - name: Clear docker-compose
+    become: true
+    command: docker-compose down --remove-orphans
+    args:
+      chdir: /home/
+
+  - name: Pull latest docker images
+    become: true
+    command: docker-compose pull
+    args:
+      chdir: /home/
+
+  - name: Start remaining docker-compose services
+    become: true
+    command: docker-compose up -d
+    args:
+      chdir: /home/
+
+  - name: Reload nginx to activate the websites
+    become: true
+    service: name=nginx state=restarted
+
+  - name: Install letsencrypt
+    become: true
+    snap:
+      name: certbot
+      classic: true
+      state: present
+
+  - name: Link snap to /usr/bin
+    become: true
+    file:
+      src: /snap/bin/certbot
+      dest: /usr/bin/certbot
+      state: link
+
+  - name: Create letsencrypt certificate for `jenkins.cyber-mint.com`
+    become: true
+    command: "certbot --nginx -m info@cyber-mint.com --agree-tos -d jenkins.cyber-mint.com --noninteractive --redirect"
+
+  - name: Add Cronjob for Certificate Auto Renewal
+    become: true
+    cron: name=letsencrypt_renewal special_time=monthly job="/usr/bin/certbot renew"
+    when: ansible_facts['os_family'] == "Debian"
+
+  - name: Reload nginx to activate the websites
+    become: true
+    service: name=nginx state=restarted
+
+  - name: Reboot the host
+    become: true
+    reboot:
+      reboot_timeout: 3600
+
+  - name: Restart docker-compose services
+    become: true
+    command: docker-compose up -d
+    args:
+      chdir: /home/
+
+

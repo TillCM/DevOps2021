@@ -1,0 +1,11 @@
+---
+  - hosts: jenkins
+    gather_facts: yes
+    vars_files:
+      - vars/default.yml
+      
+    roles:
+      - role: run_first
+     # - role: deploy
+
+

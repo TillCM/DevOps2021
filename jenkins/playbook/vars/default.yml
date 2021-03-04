@@ -1,0 +1,4 @@
+---
+  vm_user: vagrant
+  #vm_password: "vagrant"
+  sys_packages: ['curl', 'git', 'ufw', 'tree']
