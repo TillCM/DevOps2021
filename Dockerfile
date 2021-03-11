@@ -22,11 +22,11 @@ RUN mkdir /publishedApp
 RUN dotnet publish team-reece.csproj -c release -o /publishedApp
 
 # final stage/image
-FROM mcr.microsoft.com/dotnet/aspnet:5.0
+FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS runtime
 ENV TZ=Africa/Johannesburg
 RUN apt-get update
 RUN apt-get upgrade -y
-RUN apt-get install -y tzdata
+RUN apt-get install -y tzdata curl
 WORKDIR /app
 COPY --from=build /publishedApp .
 

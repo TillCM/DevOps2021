@@ -9,23 +9,18 @@ services:
       MSSQL_PID: Developer
       SA_PASSWORD: "Your_password123"
       ACCEPT_EULA: "Y"
-      
-    
-      
     extra_hosts: 
       - "localhost:192.168.10.55"  
-
     user: root 
     networks: 
       - team-reece
     ports: 
       - 1433:1433
-    
     volumes:
       - ./mssql/data:/var/opt/mssql/data
       - ./mssql/log:/var/opt/mssql/log
       - ./mssql/secrets:/var/opt/mssql/secrets
-      - ./mssql/sql:/tmp/sql
+      # - ./mssql/sql:/tmp/sql
 
   migration:
     build: 
@@ -43,16 +38,17 @@ services:
       DATABASE_NAME: "teamfu"
       SA_USER: "sa"
       SA_PASSWORD: "Your_password123"
+    command: /bin/sh -c '/scripts/wait-for.sh db:1433 -t 30 -- flyway  migrate  -user="sa" -password="Your_password123" -url="jdbc:sqlserver://db:1433;databaseName=master" -locations="filesystem:." -baselineOnMigrate=true -baselineVersion=0'      
     
-    volumes:
-      - ./mssql/data:/var/opt/mssql/data
-      - ./mssql/log:/var/opt/mssql/log
-      - ./mssql/secrets:/var/opt/mssql/secrets
-      - ./mssql/sql:/tmp/sql 
-    depends_on: 
-      - db   
+    #volumes:
+    #  - ./mssql/data:/var/opt/mssql/data
+    #  - ./mssql/log:/var/opt/mssql/log
+    #  - ./mssql/secrets:/var/opt/mssql/secrets
+    #  - ./mssql/sql:/tmp/sql 
+    depends_on:
+      - db
     networks:
-      - team-reece     
+      - team-reece
   
 networks: 
   team-reece:
