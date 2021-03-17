@@ -34,7 +34,7 @@ namespace team_reece.Models
 
             modelBuilder.Entity<ToDo>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(x=>x.PurchaseOrderId);
 
                 entity.ToTable("ToDo");
 

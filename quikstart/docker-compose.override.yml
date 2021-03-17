@@ -7,15 +7,17 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5001:80"
+    environment: 
+    - DATABASE_SERVER=db
+    - DATABASE_PORT=1433
+    - DATABASE_USER=SA
+    - DATABASE_PASSWORD=Your_password123
+    - DATABASE_NAME=teamfu 
     networks: 
      - team-reece
     depends_on: 
       - db
-
-    environment: 
-      - DATABASE_SERVER=db
-      - DATABASE_PORT=1433
-      - DATABASE_USER=SA
-      - DATABASE_PASSWORD=Your_password123
-      - DATABASE_NAME=teamfu
+      - migration
+  
+   
 

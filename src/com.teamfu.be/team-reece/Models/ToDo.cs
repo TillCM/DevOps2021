@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -7,7 +8,8 @@ namespace team_reece.Models
 {
     public partial class ToDo
     {
-        public int PurchaseOrderId { get; set; }
+        [Key]
+        public int? PurchaseOrderId { get; set; }
         public short LineNumber { get; set; }
         public int? ProductId { get; set; }
         public decimal? UnitPrice { get; set; }

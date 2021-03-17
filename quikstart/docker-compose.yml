@@ -9,23 +9,47 @@ services:
       MSSQL_PID: Developer
       SA_PASSWORD: "Your_password123"
       ACCEPT_EULA: "Y"
-      
-    
-      
     extra_hosts: 
       - "localhost:192.168.10.55"  
-
     user: root 
     networks: 
       - team-reece
     ports: 
       - 1433:1433
-    
     volumes:
       - ./mssql/data:/var/opt/mssql/data
       - ./mssql/log:/var/opt/mssql/log
       - ./mssql/secrets:/var/opt/mssql/secrets
       - ./mssql/sql:/tmp/sql
+
+  migration:
+    build: 
+      context: ./migrations
+      dockerfile: DockerFile
+    environment:
+    #flyway.com
+      FLYWAY_USER: "sa"
+      FLYWAY_PASSWORD: "Your_password123"
+      FLYWAY_MIXED: "true"
+      FLYWAY_URL: "jdbc:sqlserver://db:1433;databaseName=teamfu"
+      DATABASE_SERVER: "db"
+      DATABASE_USER: "sa"
+      DATABASE_PASSWORD: "Your_password123"
+      DATABASE_PORT: "1433"
+      DATABASE_NAME: "teamfu"
+      SA_USER: "sa"
+      SA_PASSWORD: "Your_password123"
+    command: /bin/sh -c '/scripts/wait-for.sh db:1433 -t 30 -- flyway  migrate  -user="sa" -password="Your_password123" -url="jdbc:sqlserver://db:1433;databaseName=master" -locations="filesystem:." -baselineOnMigrate=true -baselineVersion=0'      
+    
+    #volumes:
+    #  - ./mssql/data:/var/opt/mssql/data
+    #  - ./mssql/log:/var/opt/mssql/log
+    #  - ./mssql/secrets:/var/opt/mssql/secrets
+    #  - ./mssql/sql:/tmp/sql 
+    depends_on:
+      - db
+    networks:
+      - team-reece
   
 networks: 
   team-reece:

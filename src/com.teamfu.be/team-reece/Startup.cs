@@ -43,7 +43,7 @@ namespace team_reece
         {
             if (env.IsDevelopment())
             {
-                // app.UseEnvironnmentVariables();
+                //app.UseEnvironnmentVariables();
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "team_reece v1"));
@@ -90,5 +90,17 @@ namespace team_reece
             string database = GetEnvironmentVariableValue("DATABASE_NAME", null);
             return $"Data Source={host},{port};Database={database};User Id={userid};Password={password};";
         }
+
+        //  public static string GenerateDBConnectionFromEnv()
+        // {
+        //     string host = "localhost";
+        //     string port =  "1433";
+        //     string userid ="SA";
+        //     string password = "Your_password1";
+        //     string database = "teamfu";
+        //     return $"Data Source={host},{port};Database={database};User Id={userid};Password={password};";
+        // }
+
+        
     }
 }
