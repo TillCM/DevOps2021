@@ -62,35 +62,6 @@ namespace team_reece
         }
     }
 
-    public static class EnvironmentHelper
-    {        
-        public static string GetEnvironmentVariableValue(string variableName, string defaultValue)
-        {
-            var variableValue = Environment.GetEnvironmentVariable(variableName);
-            
-            if (!string.IsNullOrWhiteSpace(variableValue)) 
-                return variableValue;
-
-            if (defaultValue == null)
-            {
-                var errorMessage = $"Environment variable '{variableName}` is required.";
-                Console.WriteLine(errorMessage);
-                throw new ArgumentNullException(variableName, errorMessage);
-            }
-
-            return defaultValue;
-        }
-
-        public static string GenerateDBConnectionFromEnv()
-        {
-            string host = GetEnvironmentVariableValue("DATABASE_SERVER", null);
-            string port = GetEnvironmentVariableValue("DATABASE_PORT", "1433");
-            string userid = GetEnvironmentVariableValue("DATABASE_USER", null);
-            string password = GetEnvironmentVariableValue("DATABASE_PASSWORD", null);
-            string database = GetEnvironmentVariableValue("DATABASE_NAME", null);
-            return $"Data Source={host},{port};Database={database};User Id={userid};Password={password};";
-        }
-
         //  public static string GenerateDBConnectionFromEnv()
         // {
         //     string host = "localhost";

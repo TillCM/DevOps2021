@@ -19,6 +19,7 @@ RUN ls -l
 COPY src/com.teamfu.be/team-reece/. /app/team-reece/
 WORKDIR /app/team-reece
 RUN mkdir /publishedApp
+ENV DATABASE_SERVER =db
 RUN dotnet publish team-reece.csproj -c release -o /publishedApp
 
 # final stage/image

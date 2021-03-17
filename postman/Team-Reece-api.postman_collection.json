@@ -1,0 +1,145 @@
+{
+	"info": {
+		"_postman_id": "62104f0f-fcea-4a65-b651-d8047178971a",
+		"name": "Team-Reece-api",
+		"description": "# Team-reece API Call tests\nTest calls for the team-reece api created during devops training. \n\n## This thest tests the follow 2 end points\n1. Ready - * which just returns OK or 201 as a status*\n2.Lists - * which returns JSON*",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "{{baseurl}}/api/lists",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"purchaseOrderId\":2000,\n\"lineNumber\":2000,\n\"productId\":2000,\n\"unitPrice\":20.0000,\n\"orderQty\":2000,\n\"receivedQty\":2000,\n\"rejectedQty\":0,\n\"dueDate\":\"2012-12-12T00:00:00\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseurl}}/api/lists",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"api",
+						"lists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{baseurl}}/weatherforecast",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     pm.response.to.be.ok;",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseurl}}/weatherforecast",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"weatherforecast"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{baseurl}}/Ready",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseurl}}/Ready",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"Ready"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{baseurl}}/api/lists",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     pm.response.to.be.ok;",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseurl}}/api/lists",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"api",
+						"lists"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

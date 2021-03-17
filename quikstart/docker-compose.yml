@@ -36,7 +36,7 @@ services:
       DATABASE_USER: "sa"
       DATABASE_PASSWORD: "Your_password123"
       DATABASE_PORT: "1433"
-      DATABASE_NAME: "teamfu"
+      DATABASE_NAME: "master"
       SA_USER: "sa"
       SA_PASSWORD: "Your_password123"
     command: /bin/sh -c '/scripts/wait-for.sh db:1433 -t 30 -- flyway  migrate  -user="sa" -password="Your_password123" -url="jdbc:sqlserver://db:1433;databaseName=master" -locations="filesystem:." -baselineOnMigrate=true -baselineVersion=0'      
