@@ -23,10 +23,11 @@ RUN dotnet restore team-reece.csproj
 #build unit test 
 COPY /com.teamfu.server/team_reece_tests/. /app/team-reece_tests/
 WORKDIR /app/team_reece_tests
-RUN mkdir /publishedApp
+RUN mkdir /buildApp
 ENV DATABASE_SERVER =db
-RUN dotnet publish team_reece_tests.csproj -c release -o /publishedApp
-
+RUN dotnet build team_reece_tests.csproj -c release -o /buildApp
+RUN dotnet test "team_reece_tests.csproj" --logger "trx:LogFileName= Team_reece_tests.trx"
+RUN ls
 
 
 # final stage/image

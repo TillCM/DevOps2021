@@ -29,8 +29,8 @@ namespace team_reece
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            Console.WriteLine(EnvironmentHelper.GenerateDBConnectionFromEnv());
-            services.AddDbContext<teamfuContext>(options=> options.UseSqlServer(EnvironmentHelper.GenerateDBConnectionFromEnv()));
+            Console.WriteLine(EnvironmentHelper.GenerateDBConnectionFromEnvMan());
+            services.AddDbContext<teamfuContext>(options=> options.UseSqlServer(EnvironmentHelper.GenerateDBConnectionFromEnvMan()));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -85,25 +85,25 @@ namespace team_reece
             return defaultValue;
         }
 
-        public static string GenerateDBConnectionFromEnv()
-        {
-            string host = GetEnvironmentVariableValue("DATABASE_SERVER", null);
-            string port = GetEnvironmentVariableValue("DATABASE_PORT", "1433");
-            string userid = GetEnvironmentVariableValue("DATABASE_USER", null);
-            string password = GetEnvironmentVariableValue("DATABASE_PASSWORD", null);
-            string database = GetEnvironmentVariableValue("DATABASE_NAME", null);
-            return $"Data Source={host},{port};Database={database};User Id={userid};Password={password};";
-        }
-
-        //  public static string GenerateDBConnectionFromEnv()
+        // public static string GenerateDBConnectionFromEnv()
         // {
-        //     string host = "localhost";
-        //     string port =  "1433";
-        //     string userid ="SA";
-        //     string password = "Your_password1";
-        //     string database = "teamfu";
+        //     string host = GetEnvironmentVariableValue("DATABASE_SERVER", null);
+        //     string port = GetEnvironmentVariableValue("DATABASE_PORT", "1433");
+        //     string userid = GetEnvironmentVariableValue("DATABASE_USER", null);
+        //     string password = GetEnvironmentVariableValue("DATABASE_PASSWORD", null);
+        //     string database = GetEnvironmentVariableValue("DATABASE_NAME", null);
         //     return $"Data Source={host},{port};Database={database};User Id={userid};Password={password};";
         // }
+
+         public static string GenerateDBConnectionFromEnvMan()
+         {
+           string host = "db";
+           string port =  "1433";
+            string userid ="SA";
+           string password = "Your_password1";
+           string database = "teamfu";
+          return $"Data Source={host},{port};Database={database};User Id={userid};Password={password};";
+        }
 
         
     }
