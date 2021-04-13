@@ -1,0 +1,12 @@
+---
+  - hosts: servers
+    gather_facts: yes
+    vars_files:
+      - vars/default.yml
+      
+    roles:
+      #- role: run_first
+      #- role: install_docker
+      #- role: install_jenkins
+      - role: install_sonar
+      #- role: update

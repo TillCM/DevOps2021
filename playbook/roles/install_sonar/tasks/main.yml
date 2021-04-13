@@ -1,0 +1,8 @@
+---
+  - name: Pull the sonarqube container
+    become: yes
+    command: docker pull sonarqube:latest
+
+  - name: Run the sonarqube container
+    become: yes
+    command: docker run --restart=always -d --name sonarqube -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p 9000:9000 sonarqube:latest

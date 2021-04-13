@@ -27,7 +27,7 @@ namespace team_reece.Controllers
         [HttpGet]
         public List<ToDo> Get()
         {
-            
+    
             
             return  _context.ToDos.ToList();
         }

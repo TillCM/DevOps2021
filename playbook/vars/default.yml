@@ -1,0 +1,6 @@
+---
+  vm_user: vagrant
+  vm_password: "vagrant"
+  sys_packages: ['curl', 'git', 'ufw']
+  aws_access_key: "access"
+  aws_secret_access_key: "secret"
