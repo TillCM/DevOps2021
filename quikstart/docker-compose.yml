@@ -51,22 +51,7 @@ services:
     networks:
       - team-reece
 
-  unit_tests:
-    image: team_reece/teamfu:latest
-    environment: 
-      - DATABASE_SERVER=db
-      - DATABASE_PORT=1433
-      - DATABASE_USER=SA
-      - DATABASE_PASSWORD=Your_password123
-      - DATABASE_NAME=teamfu 
-    volumes:
-      - ./tests
-    command: 
-        - /bin/bash
-        - ../migrations/scripts.wait-for.sh
-        - ../test_scripts/test.sh
-    depends_on: 
-      - db
+ 
   
 networks: 
   team-reece:

@@ -47,6 +47,8 @@ namespace team_reece
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "team_reece v1"));
+                var config = new ConfigurationBuilder().AddEnvironmentVariables()
+            .Build();
             }
 
             app.UseHttpsRedirection();
@@ -59,6 +61,8 @@ namespace team_reece
             {
                 endpoints.MapControllers();
             });
+
+             
         }
     }
 

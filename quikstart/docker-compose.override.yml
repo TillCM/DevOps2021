@@ -13,6 +13,10 @@ services:
     - DATABASE_USER=SA
     - DATABASE_PASSWORD=Your_password123
     - DATABASE_NAME=teamfu 
+
+    command:
+      - /bin/bash
+      - /test_scripts/test.sh
     networks: 
      - team-reece
     depends_on: 
