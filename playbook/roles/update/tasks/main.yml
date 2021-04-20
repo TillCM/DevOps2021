@@ -1,0 +1,13 @@
+---
+  - name: Update apt 
+    apt: update_cache=yes
+    become: true
+
+  - name: Upgrade all apt packages
+    apt: upgrade=dist force_apt_get=yes
+    become: true
+
+  - name: Reboot a slow machine that might have lots of updates to apply
+    become: true
+    reboot:
+      reboot_timeout: 3600

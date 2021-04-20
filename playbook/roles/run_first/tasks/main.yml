@@ -1,0 +1,130 @@
+---
+  - name: Install Prerequisites
+    apt: name=aptitude update_cache=yes state=latest force_apt_get=yes
+    become: true
+  
+  - name: Update apt and install default packages
+    apt: update_cache=yes
+    become: true
+
+  - name: Install required system packages
+    apt: name={{ sys_packages }} state=latest
+    become: true
+
+  - name: Use passwordless sudo
+    lineinfile:
+      path: /etc/sudoers
+      state: present
+      regexp: '^%sudo'
+      line: '%sudo ALL=(ALL) NOPASSWD: ALL'
+      validate: 'visudo -cf %s'
+    run_once: true
+    become: true
+
+  - name: Add a wheel group (where we keep sudoers)
+    group:
+      name: wheel
+      state: present
+    become: true  
+
+  - name: Add a vm_user group
+    group:
+      name: "{{ lookup('env', 'VM_USER') or vm_user }}"
+      state: present
+    become: true 
+
+  - name: Add wheel group to sudoers
+    lineinfile:
+      dest: /etc/sudoers
+      state: present
+      regexp: '^%wheel'
+      line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+      validate: 'visudo -cf %s'
+    become: true  
+
+  - name: Add vm_user to wheel group
+    user:
+      name: "{{ lookup('env', 'VM_USER') or vm_user }}"
+      groups: "{{ lookup('env', 'VM_USER') or vm_user }},wheel"
+      state: present
+      createhome: yes
+      shell: /bin/bash
+      append: yes
+    become: yes
+
+  - name: List available public keys
+    debug: msg={{ lookup('fileglob', 'public_keys/*') }}
+
+  - name: Install root access public keys
+    authorized_key:
+      user: "root"
+      state: present
+      key: "{{ lookup('file', item) }}"
+    with_fileglob:
+      - public_keys/root_*.pub
+    become: yes
+
+  - name: Display username
+    debug: msg="{{ lookup('env', 'VM_USER') or vm_user }}"
+
+  - name: Install all available public keys
+    authorized_key:
+      user: "{{ lookup('env', 'VM_USER') or vm_user }}"
+      state: present
+      key: "{{ lookup('file', item) }}"
+    with_fileglob:
+      - public_keys/id_*
+    become: yes
+
+  - name: Set logging
+    ufw:
+      logging: 'on'
+    become: true  
+
+  - name: UFW - Deny all other incoming traffic by default
+    ufw:
+      state: enabled
+      policy: deny
+      direction: incoming
+    become: true  
+
+  - name: Allow OpenSSH  
+    ufw:
+      rule: allow
+      name: OpenSSH    
+    become: true
+
+  - name: Install tree
+    become: yes
+    apt:
+      name: tree
+      state: present
+
+#  - name: Allow all access to tcp port 80
+#    ufw:
+#      rule: allow
+#      port: '80'
+#      proto: tcp
+#    become: true
+
+  - name: Allow all access from RFC1918 networks to this host
+    ufw:
+      rule: allow
+      src: '{{ item }}'
+    loop:
+      - 10.0.0.0/8
+      - 172.16.0.0/12
+      - 192.168.10.0/16
+    become: true
+
+  - name: Disable password logins
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      state: present
+      regexp: '^PasswordAuthentication'
+      line: 'PasswordAuthentication no'
+    become: true
+
+  - name: Restart ssh
+    command: systemctl restart ssh
+    become: true
