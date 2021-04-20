@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage ('Git Checkout') {
           steps {
-            git branch: "pipeline_wip", url: 'https://github.com/TillCM/teamfu'
+            git branch: "main", url: 'https://github.com/TillCM/teamfu'
           }
         }
         
