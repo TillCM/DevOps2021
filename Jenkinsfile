@@ -45,7 +45,7 @@ pipeline {
                     apt-get update -y
                     apt-get install docker-ce docker-ce-cli containerd.io -y
                     docker --version
-                    docker build . -t teamfu:latest
+                    docker build . -t team_reece/teamfu:latest
                     az --version
                 '''
             }
@@ -62,19 +62,36 @@ pipeline {
                     dotnet --version
                     dotnet tool install --global dotnet-sonarscanner
                     export PATH="$PATH:/root/.dotnet/tools"
-                    dotnet sonarscanner begin /k:"teamfu-sarina" /d:sonar.host.url="http://192.168.11.167:9000"  /d:sonar.login="5f37212fcdaa4905efae79cb195f70704b571344"
+                    dotnet sonarscanner begin /k:"teamfu-sarina" /d:sonar.host.url="http://192.168.11.167:9000" /d:sonar.login="ff2497988364aa5d53eea2397e5a2155ac9d05fc"
                     dotnet build ${workspace}/src/com.teamfu.be/team-reece/team-reece.csproj
-                    dotnet sonarscanner end /d:sonar.login="5f37212fcdaa4905efae79cb195f70704b571344"
+                    dotnet sonarscanner end /d:sonar.login="ff2497988364aa5d53eea2397e5a2155ac9d05fc"
                 """
             }
         }
-        stage('deploy') {
-            when {
-                branch 'main'
-            }
+        stage('Integration tests') {
             steps {
                 sh """
-                    echo "Deploy placeholder"
+                    curl -L "https://github.com/docker/compose/releases/download/1.29.1/docker-compose-Linux-x86_64" -o /usr/local/bin/docker-compose
+                    chmod +x /usr/local/bin/docker-compose
+                    ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+                    apt-get install nodejs npm sed -y
+                    npm install -g newman
+                    docker-compose --version
+                    newman --version
+                    hostname -I
+                    docker-compose -f quikstart/docker-compose.yml -f quikstart/docker-compose.override.yml down --remove-orphans
+                    docker system prune -f
+                    docker-compose -f quikstart/docker-compose.yml pull
+                    docker-compose -f quikstart/docker-compose.yml -f quikstart/docker-compose.override.yml build
+                    docker-compose -f quikstart/docker-compose.yml up -d
+                    sleep 10
+                    docker-compose -f quikstart/docker-compose.yml -f quikstart/docker-compose.override.yml up -d
+                    sed -i 's/localhost/192.168.11.167/g' postman/team-reece.postman_environment.json
+                    cat postman/team-reece.postman_environment.json
+                    sleep 10
+                    docker ps -a
+                    newman run postman/Team-Reece-api.postman_collection.json -e postman/team-reece.postman_environment.json --insecure
+                    docker-compose -f quikstart/docker-compose.yml -f quikstart/docker-compose.override.yml down --remove-orphans
                 """
             }
         }
